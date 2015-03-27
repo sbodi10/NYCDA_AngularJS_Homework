@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<title>NYCDA AngularJS 102 - Homework 1</title>
+		<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body ng-class="colors" ng-controller="myController">
+
+		<div class="container">
+			<div class="page-header">
+				<h3>{{title}}</h3>
+				<h3>{{subtitle}}</h3>
+			</div>
+
+			<div class="col-md-4">
+				<div>
+					<input type="radio" name="color" ng-model="colors" value="default"> Default
+					<input type="radio" name="color" ng-model="colors" value="blue"> Blue
+					<input type="radio" name="color" ng-model="colors" value="red"> Red
+					<input type="radio" name="color" ng-model="colors" value="green"> Green
+					<input type="radio" name="color" ng-model="colors" value="purple"> Purple
+					<input type="radio" name="color" ng-model="colors" value="yellow"> Purple
+				</div><br><br><br>
+				<!--<div ng-repeat="color in colors">
+					<input type="radio" name="color" ng-model="$parent.value" value="{{color.value}}"> {{color.value}}
+				</div>-->
+
+				<div class="folders">
+					<input type="checkbox" ng-model="checked">Show All Items	<br><br>
+					<ul class="list-group" ng-repeat="folder in folders">
+							<li class="list-group-item active">{{folder.folderName}}</li>
+							<li ng-show="checked" class="list-group-item" ng-repeat="item in items">{{item.name}}</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-md-8">
+				{{text}}
+			</div>
+
+
+		</div>
+
+		<script src='node_modules/angular/angular.min.js'></script>
+		<script src='node_modules/angular-ui-router/release/angular-ui-router.min.js'></script>
+		<script src='app.js'></script>
+	</body>
+</html>

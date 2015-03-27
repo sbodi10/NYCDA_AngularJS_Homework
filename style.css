@@ -1,0 +1,31 @@
+/*Swami Shreeji -- CSS*/
+
+.blue {
+	background-color: blue;
+	color: white;
+}
+
+.red {
+	background-color: red;
+	color: yellow;
+}
+
+.green {
+	background-color: green;
+	color: yellow;
+}
+
+.purple {
+	background-color: purple;
+	color: yellow;
+}
+
+.yellow {
+	background-color: yellow;
+	color: green;
+}
+
+.default {
+	background-color: white;
+	color: black;
+}
