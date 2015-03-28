@@ -2,8 +2,8 @@
 <html ng-app="myApp">
 	<head>
 		<title>NYCDA AngularJS 102 - Homework 1</title>
-		<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="styles/style.css">
 	</head>
 	<body ng-class="colors" ng-controller="myController">
 
@@ -27,7 +27,7 @@
 				</div>-->
 
 				<div class="folders">
-					<input type="checkbox" ng-model="checked">Show All Items	<br><br>
+					<input type="checkbox" ng-model="checked"> Show All Items	<br><br>
 					<ul class="list-group" ng-repeat="folder in folders">
 							<li class="list-group-item active">{{folder.folderName}}</li>
 							<li ng-show="checked" class="list-group-item" ng-repeat="item in items">{{item.name}}</li>
@@ -42,8 +42,7 @@
 
 		</div>
 
-		<script src='node_modules/angular/angular.min.js'></script>
-		<script src='node_modules/angular-ui-router/release/angular-ui-router.min.js'></script>
-		<script src='app.js'></script>
+		<script src='../node_modules/angular/angular.min.js'></script>
+		<script src='scripts/app.js'></script>
 	</body>
 </html>
