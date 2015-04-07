@@ -1,0 +1,49 @@
+/*Swami Shreeji -- Styles*/
+
+body {
+	font-family: 'Open Sans', 'sans-serif';
+}
+
+.square {
+	width: 135px;
+	height: 135px;
+	border-radius: 2px;
+	border: 1px solid black;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.start {
+	padding-top: 100px;
+}
+
+#blue {
+	background-color: #3498db;
+}
+
+#blue:active {
+	background-color: #2980b9;
+}
+
+#green {
+	background-color: #2ecc71;
+}
+
+#green:active {
+	background-color: #27ae60;
+}
+
+#red {
+	background-color: #e74c3c;
+}
+
+#red:active {
+	background-color: #c0392b;
+}
+
+#yellow {
+	background-color: #f1c40f;
+}
+
+#yellow:active {
+	background-color: #f39c12;
+}
