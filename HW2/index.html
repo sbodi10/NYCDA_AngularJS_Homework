@@ -6,29 +6,32 @@
 		<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
 		<link rel="stylesheet" href="styles/main.css">
 	</head>
-	<body>
+	<body ng-controller="myController">
 		<div class="container">
 			<h3>Simon</h3>
 
 			<div class="col-md-6">
 				<div class="col-md-3">
-					<div id="green" class="square"></div>
-					<div id="yellow" class="square"></div>
+					<div id="green" class="square" ng-model="clicked" ng-value="green" ng-click="addNewColor('Green')"></div>
+					<div id="yellow" class="square" ng-model="clicked" ng-click="addNewColor('Yellow')"></div>
 				</div>
 				<div class="col-md-3">
-					<div id="red" class="square"></div>
-					<div id="blue" class="square"></div>
+					<div id="red" class="square" ng-model="clicked" ng-click="addNewColor('Red')"></div>
+					<div id="blue" class="square" ng-model="clicked" ng-click="addNewColor('Blue')"></div>
 				</div>
 
 			</div>
 
 			<div class="col-md-6">
-				Text
+				<h3>Colors Selected: </h3>
+				<div ng-repeat="item in board.colors">
+					<span>{{item.value}}</span>
+				</div>
 			</div>
 
 			<div class="col-md-12 start">
-				Some text here
-				<button class="btn btn-primary">Start Game</button>
+				<button class="btn btn-primary" ng-click="startGame()">Start Game</button>
+				Score: <span>{{board.score}}</span>
 			</div>
 
 
