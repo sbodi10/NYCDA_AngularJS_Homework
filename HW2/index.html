@@ -26,18 +26,18 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="col-md-3">
-						<div id="green" class="square" ng-model="clicked" ng-value="green" ng-click="addNewColor('Green')"></div>
-						<div id="yellow" class="square" ng-model="clicked" ng-click="addNewColor('Yellow')"></div>
+						<div id="green" data-id="1" class="square" ng-model="clicked" ng-value="green" ng-click="addNewColor('Green')"></div>
+						<div id="yellow" data-id="3" class="square" ng-model="clicked" ng-click="addNewColor('Yellow')"></div>
 					</div>
 					<div class="col-md-3">
-						<div id="red" class="square" ng-model="clicked" ng-click="addNewColor('Red')"></div>
-						<div id="blue" class="square" ng-model="clicked" ng-click="addNewColor('Blue')"></div>
+						<div id="red" data-id="2" class="square" ng-model="clicked" ng-click="addNewColor('Red')"></div>
+						<div id="blue" data-id="4" class="square" ng-model="clicked" ng-click="addNewColor('Blue')"></div>
 					</div>
 				</div>
 
 				<div class="col-md-6">
-					<h3>Colors Selected: </h3>
-					<div ng-repeat="item in board.colors">
+					<h3>{{sequence}}</h3>
+					<div ng-repeat="item in board.userColors">
 						<span>{{item.value}}</span>
 					</div>
 				</div>
@@ -45,7 +45,8 @@
 
 			<div class="row">
 				<div class="col-md-12">
-
+					<h2>{{begin}}</h2>
+					<h2>{{gameStatus}}</h2>
 				</div>
 			</div>
 		</div>
