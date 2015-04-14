@@ -1,7 +1,16 @@
 //Swami Shreeji
 var myApp = angular.module('myApp', []);
 
-myApp.controller('myController', ['$scope', '$timeout', '$interval', 'BoardDTO', 'SimonDTO', function($scope, $timeout, $interval, BoardDTO, SimonDTO) {
+myApp.controller('myController', ['$scope', '$timeout', '$interval', 'Color_Value', 'BoardDTO', 'SimonDTO', function($scope, $timeout, $interval, Color_Value, BoardDTO, SimonDTO) {
+
+	$scope.colorOptions = Color_Value;
+
+	$scope.userSelect = function(color) {
+		$scope.currentSelection = color;
+		$timeout(function() {
+			$scope.currentSelection = null;
+		}, 3000);
+	}
 
 	//Intialize Views
 	$scope.sequence = 'Current Simon Sequence';
@@ -36,6 +45,21 @@ myApp.controller('myController', ['$scope', '$timeout', '$interval', 'BoardDTO',
 
 
 }]);
+
+myApp.value('Color_Value', {
+	Red : {
+
+	},
+	Blue : {
+
+	},
+	Green : {
+
+	},
+	Yellow : {
+
+	}
+});
 
 
 myApp.factory('BoardDTO', ['$timeout', '$interval', function($timeout, $interval) {
