@@ -16,34 +16,38 @@ body {
 	padding-top: 20px;
 }
 
-#blue {
+.blue {
 	background-color: #3498db;
 }
 
-#blue:active {
+.darkBlue {
 	background-color: #2980b9;
 }
 
-#green {
+.green {
 	background-color: #2ecc71;
 }
 
-#green:active {
+.darkGreen {
 	background-color: #27ae60;
 }
 
-#red {
+.red {
 	background-color: #e74c3c;
 }
 
-#red:active {
+.darkRed {
 	background-color: #c0392b;
 }
 
-#yellow {
+.yellow {
 	background-color: #f1c40f;
 }
 
-#yellow:active {
+.darkYellow {
 	background-color: #f39c12;
+}
+
+#gameUpdate {
+	padding-top: 20px;
 }
