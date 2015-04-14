@@ -86,6 +86,7 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', function($tim
 		this.simonColors = [];
 		this.score = 0;
 		this.level = 0;
+		this.indexNum = 0;
 		this.gameStatus = Game_Status;
 	};
 
@@ -98,9 +99,10 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', function($tim
 
 			$interval(function() {
 				var newColor = Math.floor((Math.random() * 4) + 1);
+				var divSelector = ['.red', '.green', '.yellow', '.blue'];
 				console.log(newColor);
-
 				//Simon needs to click on newBoxColor to add to array
+
 
 				self.simonColors.push({
 					value: newColor
@@ -114,28 +116,26 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', function($tim
 
 	BoardDTO.prototype.addUserColor = function(boxcolor) {
 		var self = this;
-		var i = 0;
 
 		self.userColors.push({
 			value: boxcolor
 		});
 
-		BoardDTO.compareColors(i);
-		i++;
+		self.compareColors(self.indexNum);
+		self.indexNum++;
 
 		console.log(self.userColors);
 	};
 
-	BoardDTO.compareColors = function(index) {
+	BoardDTO.prototype.compareColors = function(index) {
 		var self = this;
 
-		if(self.userColors[index].value !== self.simonColors[index].value) {
-			console.log(i);
+		if(self.userColors[index].value != self.simonColors[index].value) {
+			console.log(index);
 			self.gameStatus = Game_Status.Lose.status;
 			console.log("Game Over!");
 			console.log(self.gameStatus);
 		}
-
 	};
 
 	BoardDTO.prototype.getColors = function() {
