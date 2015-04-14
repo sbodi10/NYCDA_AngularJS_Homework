@@ -13,31 +13,28 @@
 					<h3>Simon</h3>
 				</div>
 				<div class="col-md-4">
-					<h3 class="float: right;">Score:
+					<h3 class="col-md-4">
+						Level: <span>{{level}}</span>
+					</h3>
+					<h3 class="col-md-4">Score:
 						<span>{{board.score}}</span>
 					</h3>
 				</div>
 				<div class="col-md-2 start">
-					<button class="btn btn-success" ng-click="startGame()">Start Game</button>
+					<button class="btn btn-success" ng-disabled="buttonDisable" ng-click="startGame()">Start Game</button>
 				</div>
 			</div><hr>
 
-
-			<div class="row">
+			<div class="row" ng-disabled="boardDisable">
 				<div class="col-md-6">
 					<div class="col-md-3">
-
-					<div id="green" ng-class="currentSelection + ' square green'" ng-click="userSelect('Green', colorOptions.Green)"></div>
-					<div id="yellow" ng-class="currentSelection + ' square yellow'" ng-click="userSelect('Yellow', colorOptions.Yellow)"></div>
-
+						<div ng-class="'square green ' + currentSelection" ng-click="userSelect('Green', colorOptions.Green)"></div>
+						<div ng-class="'square yellow ' + currentSelection" ng-click="userSelect('Yellow', colorOptions.Yellow)"></div>
 					</div>
 
 					<div class="col-md-3">
-
-					<div id="red" ng-class="currentSelection + ' square red'" ng-click="userSelect('Red', colorOptions.Red)"></div>
-
-					<div id="blue" ng-class="currentSelection + ' square blue'" ng-click="userSelect('Blue', colorOptions.Blue)"></div>
-
+						<div ng-class="'square red ' + currentSelection" ng-click="userSelect('Red', colorOptions.Red)"></div>
+						<div ng-class="'square blue ' + currentSelection" ng-click="userSelect('Blue', colorOptions.Blue)"></div>
 					</div>
 				</div>
 
@@ -55,9 +52,6 @@
 				</div>
 			</div>
 		</div>
-
-
-
 
 		<script src='../node_modules/angular/angular.min.js'></script>
 		<script src='scripts/app.js'></script>

@@ -3,39 +3,41 @@ var myApp = angular.module('myApp', []);
 
 myApp.controller('myController', ['$scope', '$timeout', '$interval', 'Color_Value', 'Game_Status', 'BoardDTO', '$log', function($scope, $timeout, $interval, Color_Value, Game_Status, BoardDTO, $log) {
 
+	//Intialize Views
+	$scope.board = new BoardDTO();
+	$scope.boardDisable = true;
 	$scope.colorOptions = Color_Value;
 	$scope.gameUpdate = Game_Status.Start.value;
+	$scope.sequence = Game_Status.Start.status;
+	$scope.level = $scope.board.getLevel();
+
+	$scope.startGame = function() {
+		$scope.gameUpdate = Game_Status.Begin.value;
+		$scope.sequence = Game_Status.Begin.status;
+		$scope.buttonDisable = true;
+		console.log("Starting Game!");
+		console.log("3");
+		console.log("2");
+		console.log("1");
+		$timeout(function() {
+			$scope.gameUpdate = Game_Status.Simon.value;
+			$scope.sequence = Game_Status.Simon.status;
+			console.log("Simon's Turn Now");
+			$scope.board.addSimonColor();
+		}, 3000);
+	};
 
 	$scope.userSelect = function(model, color) {
-		$scope.currentSelection = color.value;
 		$scope.addNewColor(model);
+		$scope.currentSelection = color.value;
 		$timeout(function() {
 			$scope.currentSelection = '';
 		}, 500);
 	};
 
-	//Intialize Views
-	$scope.sequence = 'Current Simon Sequence';
-	$scope.board = new BoardDTO();
-
-	$scope.startGame = function() {
-		$scope.gameUpdate = Game_Status.Begin.value;
-		console.log("Starting Game!");
-		console.log("3");
-		console.log("3");
-		console.log("1");
-		$timeout(function() {
-			$scope.gameUpdate = Game_Status.Simon.value;
-			console.log("Simon's Turn Now");
-		}, 3000);
-
-
-	};
-
 	$scope.addNewColor = function(color) {
 		$scope.board.addUserColor(color);
 	};
-
 
 }]);
 
@@ -56,31 +58,35 @@ myApp.value('Color_Value', {
 
 myApp.value('Game_Status', {
 	Begin : {
-		value: "Let's Begin!"
+		value: "Let's Begin!",
+		status: "3.... 2..... 1...."
 	},
 	Simon : {
 		value: "Simon's Turn!",
 		status: "Current Simon Sequence"
 	},
 	You : {
-		value: "You're Turn!"
+		value: "You're Turn!",
+		status: "Your Current Sequence"
 	},
 	Lose : {
-		value: "Incorrect! Game Over!"
+		value: "Good job! You're Score was: ",
+		status: "Incorrect! Game Over!"
 	},
 	Start : {
-		value: "Press the Start Button to play Simon!"
+		value: "Press the Start Button to play Simon!",
+		status: "Welcome to Simon!"
 	}
 });
 
-myApp.factory('BoardDTO', ['$timeout', '$interval', function($timeout, $interval) {
+myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', function($timeout, $interval, Game_Status) {
 
 	function BoardDTO() {
 		this.userColors = [];
 		this.simonColors = [];
 		this.score = 0;
 		this.level = 0;
-		this.gameStatus = '';
+		this.gameStatus = Game_Status;
 	};
 
 	BoardDTO.prototype.addSimonColor = function() {
@@ -114,19 +120,30 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', function($timeout, $interval
 			value: boxcolor
 		});
 
-		if(self.userColors[i] !== self.simonColors[i]) {
-			console.log("Game Over!");
-			self.gameStatus = "Incorrect! Game Over!";
-		}
-		else {
-			i++;
-		}
+		BoardDTO.compareColors(i);
+		i++;
 
 		console.log(self.userColors);
 	};
 
+	BoardDTO.compareColors = function(index) {
+		var self = this;
+
+		if(self.userColors[index].value !== self.simonColors[index].value) {
+			console.log(i);
+			self.gameStatus = Game_Status.Lose.status;
+			console.log("Game Over!");
+			console.log(self.gameStatus);
+		}
+
+	};
+
 	BoardDTO.prototype.getColors = function() {
-		return userColors;
+		return this.userColors;
+	};
+
+	BoardDTO.prototype.getLevel = function() {
+		return this.level;
 	};
 
 	return BoardDTO;
