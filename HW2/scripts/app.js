@@ -5,54 +5,67 @@ myApp.controller('myController', ['$scope', '$timeout', '$interval', 'Color_Valu
 
 	//Intialize Views
 	$scope.board = new BoardDTO();
+	//NEED TO FIX THIS
 	$scope.boardDisable = true;
 	$scope.colorOptions = Color_Value;
 	$scope.gameUpdate = Game_Status.Start.value;
 	$scope.sequence = Game_Status.Start.status;
 	$scope.level = $scope.board.getLevel();
+	// $scope.$watch($scope.board.currentSelection, function() {
+	// 	$scope.currentSelection = $scope.board.currentSelection;
+	// });
+	$scope.currentSelection = $scope.board.currentSelection;
 
+
+	//Start Button -> Starts Game
 	$scope.startGame = function() {
-		$scope.gameUpdate = Game_Status.Begin.value;
-		$scope.sequence = Game_Status.Begin.status;
+		$scope.boardDisable = false;
+		$scope.gameUpdate = $scope.board.gameUpdate;
+		$scope.sequence = $scope.board.gameUpdate;
 		$scope.buttonDisable = true;
 		console.log("Starting Game!");
 		console.log("3");
 		console.log("2");
 		console.log("1");
-		$timeout(function() {
-			$scope.gameUpdate = Game_Status.Simon.value;
-			$scope.sequence = Game_Status.Simon.status;
-			console.log("Simon's Turn Now");
-			$scope.board.addSimonColor();
-		}, 3000);
+		$scope.board.addSimonColor();
+		$scope.level = $scope.board.getLevel();
+		$scope.gameUpdate = $scope.board.gameUpdate;
+		$scope.sequence = $scope.board.sequence;
 	};
 
 	$scope.userSelect = function(model, color) {
-		$scope.addNewColor(model);
-		$scope.currentSelection = color.value;
-		$timeout(function() {
-			$scope.currentSelection = '';
-		}, 500);
-	};
+		$scope.board.addUserColor(model, color.value);
+		$scope.$watch($scope.board.currentSelection, function() {
+			$scope.currentSelection = $scope.board.currentSelection;
+		});
 
-	$scope.addNewColor = function(color) {
-		$scope.board.addUserColor(color);
+		if($scope.board.userColors.length == $scope.board.simonColors.length) {
+			$scope.board.addSimonColor();
+		}
 	};
 
 }]);
 
 myApp.value('Color_Value', {
 	Red : {
-		value: 'darkRed'
+		value: 'darkRed',
+		index: '1',
+		color: 'Red'
 	},
 	Blue : {
-		value: 'darkBlue'
+		value: 'darkBlue',
+		index: '2',
+		color: 'Blue'
 	},
 	Green : {
-		value: 'darkGreen'
+		value: 'darkGreen',
+		index: '3',
+		color: 'Green'
 	},
 	Yellow : {
-		value: 'darkYellow'
+		value: 'darkYellow',
+		index: '4',
+		color: 'Yellow'
 	}
 });
 
@@ -79,43 +92,69 @@ myApp.value('Game_Status', {
 	}
 });
 
-myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', function($timeout, $interval, Game_Status) {
+myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value', function($timeout, $interval, Game_Status, Color_Value) {
 
 	function BoardDTO() {
 		this.userColors = [];
 		this.simonColors = [];
+		this.currentSelection = '';
 		this.score = 0;
 		this.level = 0;
 		this.indexNum = 0;
+		this.gameUpdate = '';
+		this.sequence = '';
 		this.gameStatus = Game_Status;
 	};
 
 	BoardDTO.prototype.addSimonColor = function() {
 		var self = this;
-		self.score++;
 		self.level++;
+		console.log("Level: " + self.level);
+
+		//UPDATES STATUS OF SIMON'S TURN AND HIS SELECTIONS
+		console.log("Simon's Turn Now");
+		this.gameUpdate = Game_Status.Begin.value;
+		this.sequence = Game_Status.Begin.status;
 
 		$timeout(function() {
+			this.gameUpdate = Game_Status.Simon.value;
+			this.sequence = Game_Status.Simon.status;
+		}, 3000);
 
+
+		$timeout(function() {
 			$interval(function() {
-				var newColor = Math.floor((Math.random() * 4) + 1);
-				var divSelector = ['.red', '.green', '.yellow', '.blue'];
-				console.log(newColor);
-				//Simon needs to click on newBoxColor to add to array
+				var temp = Color_Value;
+				var keys = Object.keys(temp);
+				var random = temp[keys[Math.random * keys.length << 0]];
 
+				//RANDOM BOX LIGHTS UP
+				this.currentSelection = random.value;
+				console.log(this.currentSelection);
+				$timeout(function() {
+					console.log("GO BACK TO NORMAL COLOR");
+					this.currentSelection = random.color;
+				}, 500);
 
 				self.simonColors.push({
-					value: newColor
+					value: random.color
 				});
+				console.log(random.color);
 
-			}, 2000, self.level); //Time inbetween each color Simon selects && number of times repeated
+			}, 1500, self.level); //Time inbetween each color Simon selects && number of times repeated
 
-		}, 3000); //Time before Simon begin's his turn
+
+		}, 2000); //Time before Simon begin's his turn
 
 	};
 
-	BoardDTO.prototype.addUserColor = function(boxcolor) {
+	BoardDTO.prototype.addUserColor = function(boxcolor, darkBoxColorIndex) {
 		var self = this;
+
+		self.currentSelection = darkBoxColorIndex;
+		$timeout(function() {
+			self.currentSelection = '';
+		}, 500);
 
 		self.userColors.push({
 			value: boxcolor
@@ -124,6 +163,7 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', function($tim
 		self.compareColors(self.indexNum);
 		self.indexNum++;
 
+		//Array of Colors
 		console.log(self.userColors);
 	};
 
@@ -136,11 +176,21 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', function($tim
 			console.log("Game Over!");
 			console.log(self.gameStatus);
 		}
+
+		//Enable Start Game Button
+		//Display Score
+		//Display Game Over
+		//Display Simon's Colors
+
 	};
 
 	BoardDTO.prototype.getColors = function() {
 		return this.userColors;
 	};
+
+	BoardDTO.prototype.getSimonColors = function() {
+		return this.simonColors;
+	}
 
 	BoardDTO.prototype.getLevel = function() {
 		return this.level;
