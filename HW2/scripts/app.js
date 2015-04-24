@@ -1,6 +1,44 @@
 //Swami Shreeji
 var myApp = angular.module('myApp', []);
 
+myApp.value('GD_COL', {
+	kRed: {
+		cssOverride: 'darkRed'
+	},
+	kBlue: {
+		cssOverride: 'darkBlue'
+	},
+	kYellow: {
+		cssOverride: 'darkYellow'
+	},
+	kGreen: {
+		cssOverride: 'darkGreen'
+	}
+});
+
+myApp.controller('gdCtrl', function($scope, GD_COL, BoardDTO) {
+
+	$scope.colorOptions = GD_COL;
+
+	$scope.selectedColors = [];
+
+	$scope.board = new BoardDTO();
+
+	$scope.onHighlight = function(color) {
+		$scope.board.currentSelection = color;
+	};
+
+	$scope.onSelect = function(color) {
+		$scope.selectedColors.push(color);
+		$scope.board.currentSelection = null;
+	};
+
+	$scope.shouldHighlight = function(actual, desired) {
+		return actual == desired;
+	}
+
+});
+
 myApp.controller('myController', ['$scope', '$timeout', '$interval', 'Color_Value', 'Game_Status', 'BoardDTO', '$log', function($scope, $timeout, $interval, Color_Value, Game_Status, BoardDTO, $log) {
 
 	//Intialize Views
@@ -115,25 +153,26 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value'
 		console.log("Simon's Turn Now");
 		this.gameUpdate = Game_Status.Begin.value;
 		this.sequence = Game_Status.Begin.status;
-
 		$timeout(function() {
 			this.gameUpdate = Game_Status.Simon.value;
 			this.sequence = Game_Status.Simon.status;
 		}, 3000);
 
 
+		//Simon Selects Colors Randomly
 		$timeout(function() {
 			$interval(function() {
 				var temp = Color_Value;
 				var keys = Object.keys(temp);
-				var random = temp[keys[Math.random * keys.length << 0]];
+
+				var random = temp[keys[Math.floor(Math.random() * keys.length)]];
 
 				//RANDOM BOX LIGHTS UP
 				this.currentSelection = random.value;
 				console.log(this.currentSelection);
 				$timeout(function() {
 					console.log("GO BACK TO NORMAL COLOR");
-					this.currentSelection = random.color;
+					this.currentSelection = '';
 				}, 500);
 
 				self.simonColors.push({
@@ -170,12 +209,12 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value'
 	BoardDTO.prototype.compareColors = function(index) {
 		var self = this;
 
-		if(self.userColors[index].value != self.simonColors[index].value) {
-			console.log(index);
-			self.gameStatus = Game_Status.Lose.status;
-			console.log("Game Over!");
-			console.log(self.gameStatus);
-		}
+		// if(self.userColors[index].value != self.simonColors[index].value) {
+		// 	console.log(index);
+		// 	self.gameStatus = Game_Status.Lose.status;
+		// 	console.log("Game Over!");
+		// 	console.log(self.gameStatus);
+		// }
 
 		//Enable Start Game Button
 		//Display Score

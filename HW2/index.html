@@ -6,8 +6,36 @@
 		<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
 		<link rel="stylesheet" href="styles/main.css">
 	</head>
-	<body ng-controller="myController">
-		<div class="container">
+	<body >
+		<div ng-controller="gdCtrl">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="col-md-3">
+						<div  class="square red"
+						ng-class="{'darkRed': shouldHighlight(board.currentSelection, colorOptions.kRed)}"
+						ng-mousedown="onHighlight(colorOptions.kRed)"
+						ng-mouseUp="onSelect(colorOptions.kRed)"></div>
+						<div class="square blue"
+						ng-class="{'darkBlue': shouldHighlight(board.currentSelection, colorOptions.kBlue)}"
+						ng-mousedown="onHighlight(colorOptions.kBlue)"
+						ng-mouseUp="onSelect(colorOptions.kBlue)"></div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="square yellow"
+						ng-class="{'darkYellow': shouldHighlight(board.currentSelection, colorOptions.kYellow)}"
+						ng-mousedown="onHighlight(colorOptions.kYellow)"
+						ng-mouseUp="onSelect(colorOptions.kYellow)"></div>
+						<div class="square green"
+						ng-class="{'darkGreen': shouldHighlight(board.currentSelection, colorOptions.kGreen)}"
+						ng-mousedown="onHighlight(colorOptions.kGreen)"
+						ng-mouseUp="onSelect(colorOptions.kGreen)"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container" ng-controller="myController">
 			<div class="row">
 				<div class="col-md-6">
 					<h3>Simon</h3>
