@@ -6,8 +6,93 @@
 		<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
 		<link rel="stylesheet" href="styles/main.css">
 	</head>
-	<body >
-		<div ng-controller="gdCtrl">
+	<body>
+		<div class="container" ng-controller="myController">
+			<div class="row">
+				<div class="col-md-6">
+					<h3>Simon</h3>
+				</div>
+				<div class="col-md-4">
+					<h3 class="col-md-4">
+						Level: <span>{{board.level}}</span>
+					</h3>
+					<h3 class="col-md-4">Score:
+						<span>{{board.score}}</span>
+					</h3>
+				</div>
+				<div class="col-md-2 start">
+					<button class="btn btn-success" ng-disabled="board.buttonDisable" ng-click="startGame()">Start Game</button>
+				</div>
+			</div><hr>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="col-md-3">
+						<div class="square green"
+							ng-class="{'darkGreen': shouldHighlight(board.currentSelection, colorOptions.Green)}"
+							ng-click="userSelect('Green')"
+							ng-mousedown="darkColor(colorOptions.Green)"
+							ng-mouseup="lightColor()"
+							ng-model="board.currentSelection">
+						</div>
+						<div class="square yellow"
+							ng-class="{'darkYellow': shouldHighlight(board.currentSelection, colorOptions.Yellow)}"
+							ng-click="userSelect('Yellow')"
+							ng-mousedown="darkColor(colorOptions.Yellow)"
+							ng-mouseup="lightColor()"
+							ng-model="board.currentSelection">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="square red"
+							ng-class="{'darkRed': shouldHighlight(board.currentSelection, colorOptions.Red)}"
+							ng-click="userSelect('Red')"
+							ng-mousedown="darkColor(colorOptions.Red)"
+							ng-mouseup="lightColor()"
+							ng-model="board.currentSelection">
+						</div>
+
+						<div class="square blue"
+							ng-class="{'darkBlue': shouldHighlight(board.currentSelection, Color_Value.Blue)}"
+							ng-click="userSelect('Blue')"
+							ng-mousedown="darkColor(Color_Value.Blue)"
+							ng-mouseup="lightColor()"
+							ng-model="board.currentSelection">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<h3>{{board.sequence}}</h3>
+					<div ng-if="user" ng-repeat="item in board.userColors">
+						<span>{{item.value}}</span>
+					</div>
+					<div ng-if="simon" ng-repeat="item in board.simonColors">
+						<span>{{item.value}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row" id="gameUpdate">
+				<div class="col-md-12">
+					<h2>{{board.gameUpdate}}</h2>
+				</div>
+			</div>
+		</div>
+
+		<script src='../node_modules/angular/angular.min.js'></script>
+		<script src='scripts/app.js'></script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+		<!-- <div ng-controller="gdCtrl">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="col-md-3">
@@ -15,6 +100,7 @@
 						ng-class="{'darkRed': shouldHighlight(board.currentSelection, colorOptions.kRed)}"
 						ng-mousedown="onHighlight(colorOptions.kRed)"
 						ng-mouseUp="onSelect(colorOptions.kRed)"></div>
+
 						<div class="square blue"
 						ng-class="{'darkBlue': shouldHighlight(board.currentSelection, colorOptions.kBlue)}"
 						ng-mousedown="onHighlight(colorOptions.kBlue)"
@@ -26,6 +112,9 @@
 						ng-class="{'darkYellow': shouldHighlight(board.currentSelection, colorOptions.kYellow)}"
 						ng-mousedown="onHighlight(colorOptions.kYellow)"
 						ng-mouseUp="onSelect(colorOptions.kYellow)"></div>
+
+
+
 						<div class="square green"
 						ng-class="{'darkGreen': shouldHighlight(board.currentSelection, colorOptions.kGreen)}"
 						ng-mousedown="onHighlight(colorOptions.kGreen)"
@@ -33,55 +122,4 @@
 					</div>
 				</div>
 			</div>
-		</div>
-
-		<div class="container" ng-controller="myController">
-			<div class="row">
-				<div class="col-md-6">
-					<h3>Simon</h3>
-				</div>
-				<div class="col-md-4">
-					<h3 class="col-md-4">
-						Level: <span>{{level}}</span>
-					</h3>
-					<h3 class="col-md-4">Score:
-						<span>{{board.score}}</span>
-					</h3>
-				</div>
-				<div class="col-md-2 start">
-					<button class="btn btn-success" ng-disabled="buttonDisable" ng-click="startGame()">Start Game</button>
-				</div>
-			</div><hr>
-
-			<div class="row">
-				<div class="col-md-6">
-					<div class="col-md-3">
-						<div ng-class="'square green ' + currentSelection" ng-click="userSelect('Green', colorOptions.Green)"></div>
-						<div ng-class="'square yellow ' + currentSelection" ng-click="userSelect('Yellow', colorOptions.Yellow)"></div>
-					</div>
-
-					<div class="col-md-3">
-						<div ng-class="'square red ' + currentSelection" ng-click="userSelect('Red', colorOptions.Red)"></div>
-						<div ng-class="'square blue ' + currentSelection" ng-click="userSelect('Blue', colorOptions.Blue)"></div>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<h3>{{sequence}}</h3>
-					<div ng-repeat="item in board.userColors">
-						<span>{{item.value}}</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="row" id="gameUpdate">
-				<div class="col-md-12">
-					<h2>{{gameUpdate}}</h2>
-				</div>
-			</div>
-		</div>
-
-		<script src='../node_modules/angular/angular.min.js'></script>
-		<script src='scripts/app.js'></script>
-	</body>
-</html>
+		</div> -->
