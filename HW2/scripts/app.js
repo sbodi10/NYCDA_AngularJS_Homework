@@ -11,8 +11,8 @@ myApp.controller('myController', ['$scope', '$timeout', '$interval', 'Color_Valu
 	$scope.board.level = $scope.board.getLevel();
 	$scope.board.currentSelection = $scope.board.getCurrentSelection();
 	$scope.board.buttonDisable = $scope.board.getButtonDisabled();
-	$scope.user = $scope.board.getUserStatus();
-	$scope.simon = $scope.board.getSimonStatus();
+	$scope.board.user = $scope.board.getUserStatus();
+	$scope.board.simon = $scope.board.getSimonStatus();
 
 	//Start Button -> Starts Game
 	$scope.startGame = function() {
@@ -86,15 +86,15 @@ myApp.value('Game_Status', {
 myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value', function($timeout, $interval, Game_Status, Color_Value) {
 
 	function BoardDTO() {
+		this.score = 0;
+		this.level = 0;
+		this.indexNum = 0;
 		this.userColors = [];
 		this.simonColors = [];
 		this.buttonDisable = false;
 		this.simonStatus = true;
 		this.userStatus = false;
 		this.currentSelection = '';
-		this.score = 0;
-		this.level = 0;
-		this.indexNum = 0;
 		this.sequence = Game_Status.Start.status;
 		this.gameStatus = Game_Status.Start.value;
 	};
@@ -110,6 +110,9 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value'
 		console.log("Simon's Turn Now");
 		self.gameUpdate = Game_Status.Simon.value;
 		self.sequence = Game_Status.Simon.status;
+		console.log("Before: ");
+		console.log(self.simonStatus);
+		console.log(self.userStatus);
 
 
 		//Simon Selects Colors Randomly
@@ -121,7 +124,7 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value'
 
 				//RANDOM BOX LIGHTS UP
 				self.currentSelection = random.value;
-				console.log(self.currentSelection);
+				console.log("Random Color: " + self.currentSelection);
 				$timeout(function() {
 					console.log("GO BACK TO NORMAL COLOR");
 					self.currentSelection = '';
@@ -134,15 +137,36 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value'
 
 			}, 1500, self.level); //Time inbetween each color Simon selects && number of times repeated
 
-
 		}, 2000); //Time before Simon begin's his turn
 
+		$timeout(function() {
+			BoardDTO.userTurn();
+		}, 5000);
+
+	};
+
+	BoardDTO.userTurn = function() {
+		var self = this;
+		self.simonStatus = false;
+		self.userStatus = true;
+		self.gameUpdate = Game_Status.You.value;
+		self.sequence = Game_Status.You.status;
+		console.log("Game Update " + self.gameUpdate);
+		console.log("Sequence " + self.sequence);
+	};
+
+	BoardDTO.simonTurn = function() {
+		var self = this;
+		self.userStatus = false;
+		self.simonStatus = true;
+		self.gameUpdate = Game_Status.Simon.value;
+		self.sequence = Game_Status.Simon.status;
+		console.log("Game Update " + self.gameUpdate);
+		console.log("Sequence " + self.sequence);
 	};
 
 	BoardDTO.prototype.addUserColor = function(boxcolor) {
 		var self = this;
-		self.simonStatus = false;
-		self.userStatus = true;
 
 		self.userColors.push({
 			value: boxcolor
@@ -158,17 +182,30 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value'
 	BoardDTO.prototype.compareColors = function(index) {
 		var self = this;
 
-/*		if(self.userColors[index].value != self.simonColors[index].value) {
-			console.log(index);
-			self.gameStatus = Game_Status.Lose.status;
-			console.log("Game Over!");
-			console.log(self.gameStatus);
-		}*/
-
-/*		Enable Start Game Button
+		/*Enable Start Game Button
 		Display Score
 		Display Game Over
 		Display Simon's Colors*/
+		if(self.userColors[index].value != self.simonColors[index].value) {
+			console.log(index);
+			console.log("Game Over!");
+			console.log(self.gameStatus);
+			self.buttonDisable = false;
+			self.gameStatus = Game_Status.Lose.status;
+			self.userStatus = false;
+			self.simonStatus = true;
+		}
+
+		else if(self.userColors.length == self.simonColors.length) {
+			self.userStatus = false;
+			self.simonStatus = true;
+			self.gameUpdate = Game_Status.Simon.value;
+			self.sequence = Game_Status.Simon.status;
+			//Reset User Colors Array for next turn
+			self.userColors = [];
+			//Go back to Simon's turn
+			BoardDTO.simonTurn();
+		}
 
 	};
 
@@ -210,114 +247,3 @@ myApp.factory('BoardDTO', ['$timeout', '$interval', 'Game_Status', 'Color_Value'
 
 	return BoardDTO;
 }]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*myApp.factory('SimonDTO', ['$timeout', '$interval', function($timeout, $interval) {
-
-	function SimonDTO() {
-		this.myPattern = [];
-		this.newPattern = [];
-		this.turn = 1;
-		this.seconds = 3000;
-//		this.begin = "Let's Begin!";
-	};
-
-	SimonDTO.selectColor = function() {
-
-
-	};
-
-	SimonDTO.prototype.myTurn = function() {
-
-		this.seconds+= 3000;
-
-		//This is used for the total time it takes Simon to
-		//complete his turn
-		$timeout(function(seconds) {
-
-
-			//Use Interval to space out when the user selects a box
-			$interval(function() {
-				console.log("Color Selected");
-			}, 1500);
-
-
-		}, this.seconds);
-
-	};
-
-	SimonDTO.prototype.getStatus = function() {
-		/*this.begin = "Let's Begin!";
-		$timeout(function() {
-			this.begin = '';
-		}, 3000);
-		this.turn = "Simon's Turn!";
-
-		this.turn = "You're Turn!";
-
-		this.turn = "Game Over!";
-
-	};
-
-
-	return SimonDTO;
-}]);*/
-
-
-
-
-/*myApp.value('GD_COL', {
-	kRed: {
-		cssOverride: 'darkRed'
-	},
-	kBlue: {
-		cssOverride: 'darkBlue'
-	},
-	kYellow: {
-		cssOverride: 'darkYellow'
-	},
-	kGreen: {
-		cssOverride: 'darkGreen'
-	}
-});
-
-myApp.controller('gdCtrl', function($scope, GD_COL, BoardDTO) {
-
-	$scope.colorOptions = GD_COL;
-
-	$scope.selectedColors = [];
-
-	$scope.board = new BoardDTO();
-
-	$scope.onHighlight = function(color) {
-		$scope.board.currentSelection = color;
-	};
-
-	$scope.onSelect = function(color) {
-		$scope.selectedColors.push(color);
-		$scope.board.currentSelection = null;
-	};
-
-	$scope.shouldHighlight = function(actual, desired) {
-		return actual == desired;
-	}
-
-});
-*/
